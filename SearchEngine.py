@@ -104,8 +104,8 @@ if __name__ == "__main__":
                     if And == True:
                         AND.append([i, pr['d: ' + str(d) + ' DIFF: ' + str(DIFF)][i]])
 
-                AND = np.array(sorted(AND, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(AND) > 0 else 'none'
-                OR = np.array(sorted(OR, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(OR) > 0 else 'none'
+                AND = np.array(sorted(AND, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(AND) > 0 else np.array([-1])
+                OR = np.array(sorted(OR, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(OR) > 0 else np.array([-1])
                 print(input_words)
                 if len(input_words_list) > 1:
                     print('AND', end = ' ')
@@ -117,6 +117,9 @@ if __name__ == "__main__":
                         print('page{} '.format(str(page)) if OR[0] != -1 else 'none', end = ' ')
                     print('')
                 else:
-                    for page in AND:
-                        print('page{} '.format(str(page)) if AND[0] != -1 else 'none', end = ' ')
-                    print('')
+                    if AND[0] != -1:
+                        for page in AND:
+                            print('page{} '.format(str(page)) if AND[0] != -1 else 'none', end = ' ')
+                        print('')
+                    else:
+                        print('none')
