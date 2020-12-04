@@ -27,6 +27,7 @@ if __name__ == "__main__":
         for k in range(len(words)):
             df_wordsList[i][k] = words[k]
         df_wordsList[i][len(words)] = page[-1].replace(' \n', '')
+    print('finish preprocessing')
     
     """# 2. Reverse index"""
     word_Reverse_index = []
@@ -41,9 +42,10 @@ if __name__ == "__main__":
             wordIn.append(wordIn_temp)
         word_Reverse_index.append(wordIn)
         if (i + 1)%50 == 0:
-            print('finish', i)
+            print('finish', i+1)
 
     df_word_Reverse_index = pd.DataFrame(word_Reverse_index).T
+    print('finish word_Reverse_index')
 
     file = open(os.path.join(path, 'reverseindex.txt'), 'w')
     words_data = []
@@ -63,3 +65,4 @@ if __name__ == "__main__":
                 file.write('page{} '.format(words_data[i][j]))
         file.write('\n')
     file.close()
+    print('save file')

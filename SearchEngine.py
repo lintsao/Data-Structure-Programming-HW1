@@ -17,6 +17,8 @@ if __name__ == "__main__":
     # initial  
     d = sys.argv[1] # d_value
     DIFF = sys.argv[2] # DIFF_value
+    d = float(d)
+    DIFF = float(DIFF)
     mode = sys.argv[3] # check mode: input mode or other
     path = './' # save path
 
@@ -34,6 +36,7 @@ if __name__ == "__main__":
         for k in range(len(words)):
             df_wordsList[i][k] = words[k]
         df_wordsList[i][len(words)] = page[-1].replace(' \n', '')
+    print('finish preprocessing')
 
     # compute page rank
     diff = np.inf
@@ -44,11 +47,12 @@ if __name__ == "__main__":
         diff = np.sum(abs(pr_before - pr))
     pr = pd.DataFrame(pr)
     pr.columns = ['d: ' + str(d) + ' DIFF: ' + str(DIFF)]
+    print('finish page rank')
 
     """# 3. Search engine"""
     if mode != 'input': # summit_mode for list.txt
         read_file = open(os.path.join(path, 'list.txt'), 'r').readlines() # read list.txt
-        file = open(os.path.join(path, 'output', 'result_{}_{}.txt'.format(int(d*100), '%03d' % int(DIFF*1000))), 'w')
+        file = open(os.path.join(path, 'result_{}_{}.txt'.format(int(d*100), '%03d' % int(DIFF*1000))), 'w')
         for line in range(len(read_file)):
             input_words_list = read_file[line].replace('\n', '').split(' ')
             AND = []
@@ -79,6 +83,7 @@ if __name__ == "__main__":
                     file.write('page{} '.format(str(page)) if OR[0] != -1 else 'none')
                 file.write('\n')
         file.close()
+        print('save file')
     else: # input_mode for interaction
         input_words = '' # initial input value
         while input_words != 'end': # stop until input is 'end' 
@@ -102,8 +107,16 @@ if __name__ == "__main__":
                 AND = np.array(sorted(AND, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(AND) > 0 else 'none'
                 OR = np.array(sorted(OR, key = lambda s: s[1], reverse=True)[:10])[:, 0].astype(int) if len(OR) > 0 else 'none'
                 print(input_words)
-                if input_words_list > 1:
-                    print('AND :', AND)
-                    print('OR :', OR)
+                if len(input_words_list) > 1:
+                    print('AND', end = ' ')
+                    for page in AND:
+                        print('page{} '.format(str(page)) if AND[0] != -1 else 'none', end = ' ')
+                    print('')
+                    print('OR', end = ' ')
+                    for page in OR:
+                        print('page{} '.format(str(page)) if OR[0] != -1 else 'none', end = ' ')
+                    print('')
                 else:
-                    print(AND)
+                    for page in AND:
+                        print('page{} '.format(str(page)) if AND[0] != -1 else 'none', end = ' ')
+                    print('')

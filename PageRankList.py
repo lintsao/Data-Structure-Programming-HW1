@@ -17,6 +17,8 @@ if __name__ == "__main__":
     # initial  
     d = sys.argv[1] # d_value
     DIFF = sys.argv[2] # DIFF_value
+    d = float(d)
+    DIFF = float(DIFF)
     path = './' # save path
 
     # preprocess
@@ -37,7 +39,8 @@ if __name__ == "__main__":
         df_wordsList[i][len(words)] = page[-1].replace(' \n', '')
 
     df_countList = pd.DataFrame(countList) 
-    df_countList.columns = ['count']   
+    df_countList.columns = ['count']  
+    print('finish preprocessing') 
 
     # compute page rank 
     diff = np.inf
@@ -48,13 +51,15 @@ if __name__ == "__main__":
         diff = np.sum(abs(pr_before - pr))
     pr = pd.DataFrame(pr)
     pr.columns = ['d: ' + str(d) + ' DIFF: ' + str(DIFF)]
+    print('finish page rank')
 
     """# 1. Page Rank list"""
     file = open(os.path.join(path, 'pr_{}_{}.txt'.format(int(d*100), '%03d' % int(DIFF*1000))), 'w')
     name = 'd: ' + str(d) + ' DIFF: ' + str(DIFF)
-    df = pd.concat([pr[name], df_countList[:-1]], axis=1).sort_values(by=([name]), ascending=False)
+    df = pd.concat([pr[name][:-1], df_countList[:-1]], axis=1).sort_values(by=([name]), ascending=False)
     for line in range(len(df)):
         file.write('page{} {} {}'.format(
             df[name].index[line], int(df['count'][df[name].index[line]]), str('%.7f'%df[name][df[name].index[line]])[1:]))
         file.write('\n')
     file.close()
+    print('save file')
