@@ -62,8 +62,8 @@ if __name__ == "__main__":
                 for word in input_words_list:
                     if word not in df_wordsList[i][:-1].to_list():
                         And = False
-                    else:
-                        if i not in OR:
+                    else:                        
+                        if i not in [row[0] for row in OR]:
                             OR.append([i, pr['d: ' + str(d) + ' DIFF: ' + str(DIFF)][i]])
                 if And == True:
                     AND.append([i, pr['d: ' + str(d) + ' DIFF: ' + str(DIFF)][i]])
@@ -98,8 +98,8 @@ if __name__ == "__main__":
                     for word in input_words_list:
                         if word not in df_wordsList[i][:-1].to_list():
                             And = False
-                        else:
-                            if i not in OR:
+                        else:                        
+                            if i not in [row[0] for row in OR]:
                                 OR.append([i, pr['d: ' + str(d) + ' DIFF: ' + str(DIFF)][i]])
                     if And == True:
                         AND.append([i, pr['d: ' + str(d) + ' DIFF: ' + str(DIFF)][i]])
